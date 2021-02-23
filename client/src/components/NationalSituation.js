@@ -40,6 +40,7 @@ export const NationalSituation = () => {
     }, []);
 
     console.log(data);
+
     return (
         <>
             <Divider>
@@ -56,23 +57,23 @@ export const NationalSituation = () => {
 
             <Row gutter={32}>
                 <DataItem
-                    totalNumber={data.deces.toLocaleString()}
-                    text={`personnes hospitalisées soit + ${data.nouvellesHospitalisations.toLocaleString()} le ${
+                    totalNumber={data.deces?.toLocaleString()}
+                    text={`personnes hospitalisées soit + ${data.nouvellesHospitalisations?.toLocaleString()} le ${
                         data.date
                     }`}
                 />
                 <DataItem
-                    totalNumber={data.reanimation.toLocaleString()}
-                    text={`personnes réanimation soit + ${data.nouvellesReanimations.toLocaleString()} le ${
+                    totalNumber={data.reanimation?.toLocaleString()}
+                    text={`personnes réanimation soit + ${data.nouvellesReanimations?.toLocaleString()} le ${
                         data.date
                     }`}
                 />
                 <DataItem
-                    totalNumber={data.deces.toLocaleString()}
+                    totalNumber={data.deces?.toLocaleString()}
                     text={`décès jusqu'au ${data.date}`}
                 />
                 <DataItem
-                    totalNumber={data.gueris.toLocaleString()}
+                    totalNumber={data.gueris?.toLocaleString()}
                     text={`personnes guéries jusqu'au ${data.date}`}
                 />
             </Row>
