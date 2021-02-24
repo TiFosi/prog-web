@@ -1,49 +1,49 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Divider } from "antd";
+import { Divider } from "antd";
+import Columns from "react-columns";
 
 import { fetchFromCoronavirusAPI } from "../lib/fetchFromCoronavirusAPI";
 
 const DataItem = ({ totalNumber, text }) => {
     return (
-        <Col span={6}>
-            <div className="ant-statistic" style={{ textAlign: "center" }}>
-                <div className="ant-statistic-content">
-                    <span className="ant-statistic-content-value">
-                        <span className="ant-statistic-content-value-int">
-                            {totalNumber}
-                        </span>
+        <div className="ant-statistic" style={{ textAlign: "center" }}>
+            <div className="ant-statistic-content">
+                <span className="ant-statistic-content-value">
+                    <span className="ant-statistic-content-value-int">
+                        {totalNumber}
                     </span>
-                </div>
-                <p>{text}</p>
+                </span>
             </div>
-        </Col>
+            <p>{text}</p>
+        </div>
     );
 };
 
-DataItem.defaultProps = {
-    totalNumber: null,
-    text: null,
-};
-
 export const NationalSituation = () => {
-    const [data, setData] = useState({});
+    const [latestData, setLatestData] = useState({});
 
     useEffect(async () => {
         try {
             const response = await fetchFromCoronavirusAPI();
             if (response["FranceGlobalLiveData"]) {
-                setData(response["FranceGlobalLiveData"][0]);
+                setLatestData(response["FranceGlobalLiveData"][0]);
             }
         } catch (e) {
             console.log(e);
         }
     }, []);
 
-    console.log(data);
+    let lastUpdateDate = "NR";
+    if (latestData.date) {
+        const dateObject = new Date(latestData.date);
+        lastUpdateDate = [dateObject.getDate(), dateObject.getMonth() + 1]
+            .map((val) => val.toString().padStart(2, 0))
+            .join("/");
+    }
 
     return (
         <>
-            <Divider>
+            <Divider style={{ whiteSpace: "normal" }}>
                 <h1>Indicateurs de suivi de l'épidémie Covid-19</h1>
                 <span
                     className="ant-typography ant-typography-secondary"
@@ -51,32 +51,32 @@ export const NationalSituation = () => {
                 >
                     Les données sont actualisées chaque jours aux alentours de
                     20h. <br />
-                    Source: {data.source?.nom},
+                    Source: {latestData.source?.nom},
                 </span>
             </Divider>
-
-            <Row gutter={32}>
+            <Columns
+                queries={[
+                    { columns: 2, query: "min-width: 500px" },
+                    { columns: 4, query: "min-width: 1000px" },
+                ]}
+            >
                 <DataItem
-                    totalNumber={data.deces?.toLocaleString()}
-                    text={`personnes hospitalisées soit + ${data.nouvellesHospitalisations?.toLocaleString()} le ${
-                        data.date
-                    }`}
+                    totalNumber={latestData.deces?.toLocaleString()}
+                    text={`personnes hospitalisées soit + ${latestData.nouvellesHospitalisations?.toLocaleString()} le ${lastUpdateDate}`}
                 />
                 <DataItem
-                    totalNumber={data.reanimation?.toLocaleString()}
-                    text={`personnes réanimation soit + ${data.nouvellesReanimations?.toLocaleString()} le ${
-                        data.date
-                    }`}
+                    totalNumber={latestData.reanimation?.toLocaleString()}
+                    text={`personnes réanimation soit + ${latestData.nouvellesReanimations?.toLocaleString()} le ${lastUpdateDate}`}
                 />
                 <DataItem
-                    totalNumber={data.deces?.toLocaleString()}
-                    text={`décès jusqu'au ${data.date}`}
+                    totalNumber={latestData.deces?.toLocaleString()}
+                    text={`décès jusqu'au ${lastUpdateDate}`}
                 />
                 <DataItem
-                    totalNumber={data.gueris?.toLocaleString()}
-                    text={`personnes guéries jusqu'au ${data.date}`}
+                    totalNumber={latestData.gueris?.toLocaleString()}
+                    text={`personnes guéries jusqu'au ${lastUpdateDate}`}
                 />
-            </Row>
+            </Columns>
         </>
     );
 };
