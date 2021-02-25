@@ -8,7 +8,7 @@ import "antd/dist/antd.compact.css";
 import { NationalSituation } from "./components/NationalSituation.js";
 import Filters from "./components/filters.component.js";
 import Map from "./components/map.component.js";
-import Table from "./components/table.component.js";
+import { DataTable } from "./components/DataTable.js";
 import Graph from "./components/graph.component.js";
 
 const { Header, Content, Footer } = Layout;
@@ -37,7 +37,7 @@ function App() {
                     <NationalSituation />
                     <Filters />
                     <Map />
-                    <Table />
+                    <DataTable />
                     <Graph />
                 </Router>
             </Content>
