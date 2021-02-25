@@ -12,4 +12,3 @@ RUN npm install -g nodemon
 
 FROM base as build
 COPY ./src ./src
-COPY ./.env ./.env
