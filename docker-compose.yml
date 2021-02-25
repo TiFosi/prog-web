@@ -1,0 +1,22 @@
+version: "3"
+services:
+    client:
+        build: ./client
+        image: front:FA-SR
+        stdin_open: true
+        ports:
+            - "3000:3000"
+        command: serve -s build -l tcp://0.0.0.0:3000
+        networks:
+            - FA-SR
+    server:
+        build: ./server
+        image: back:FA-SR
+        ports:
+            - "5000:5000"
+        command: npm start
+        networks:
+            - FA-SR
+networks:
+    FA-SR:
+        driver: bridge
