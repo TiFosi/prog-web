@@ -9,7 +9,9 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 
 // BD connection
-const uri = process.env.DB_CONNECTION;
+const DB_CONNECTION =
+    "mongodb+srv://dbUser:dVhfz3JxH76V7Ce@cluster0.5tasy.mongodb.net/sante-publique-france?retryWrites=true&w=majority";
+const uri = process.env.DB_CONNECTION || DB_CONNECTION;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once("open", () => {
     console.log("### Connected to MongoDB ATLAS");
