@@ -15,6 +15,9 @@ import { Chart } from "./components/Chart.js";
 const { Header, Content, Footer } = Layout;
 const { TabPane } = Tabs;
 
+/**
+ * comment
+ */
 function App() {
     const preferredTheme = useMediaPredicate("(prefers-color-scheme: dark)")
         ? "dark"
