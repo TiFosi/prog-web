@@ -6,7 +6,6 @@ services:
         stdin_open: true
         ports:
             - "3000:3000"
-        command: serve -s build -l tcp://0.0.0.0:3000
         networks:
             - FA-SR
     server:
@@ -14,7 +13,9 @@ services:
         image: back:FA-SR
         ports:
             - "5000:5000"
-        command: npm start
+        volumes:
+            - ./server:/usr/src/app
+            - /usr/src/app/node_modules
         networks:
             - FA-SR
 networks:
