@@ -9,22 +9,21 @@ services:
         ports:
             - "3000:3000"
         volumes:
+            - ./client:/usr/src/app
             - /usr/src/app/node_modules
-            - ./client/public:/usr/src/app/public
-            - ./client/src:/usr/src/app/src
         command: tail -f /dev/null
         networks:
             - FA-SR
     server:
         build:
             context: ./server
-            target: dev
+            target: base
         image: back:FA-SR
         ports:
             - "5000:5000"
         volumes:
+            - ./server:/usr/src/app
             - /usr/src/app/node_modules
-            - ./server/src:/usr/src/app/src
         command: tail -f /dev/null
         networks:
             - FA-SR
