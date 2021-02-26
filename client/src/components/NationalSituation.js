@@ -36,8 +36,8 @@ export const NationalSituation = () => {
                 setLatestData(response["FranceGlobalLiveData"][0]);
                 setLoaded(true);
             }
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err);
         }
     }, []);
 

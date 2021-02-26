@@ -1,7 +1,7 @@
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMediaPredicate } from "react-media-hook";
-import { Layout, Switch, Tabs, Spin } from "antd";
+import { Layout, Switch as SwitchBtn, Tabs, Spin } from "antd";
 import { Row, Col } from "antd";
 
 // import "antd/dist/antd.dark.css";
@@ -9,7 +9,7 @@ import "antd/dist/antd.compact.css";
 
 import { NationalSituation } from "./components/NationalSituation.js";
 import { Filters } from "./components/Filters.js";
-import Map from "./components/map.component.js";
+import { Map } from "./components/Map.js";
 import { DataTable } from "./components/DataTable.js";
 import { Chart } from "./components/Chart.js";
 
@@ -38,8 +38,8 @@ function App() {
                 response.map((row, index) => ({ ...row, key: index + 1 }))
             );
             setIsTabDataLoaded(true);
-        } catch (e) {
-            console.log(e);
+        } catch (err) {
+            console.log(err);
         }
     }, []);
 
@@ -47,7 +47,10 @@ function App() {
         <Layout>
             <Header>
                 <div style={{ float: "right" }}>
-                    <Switch checkedChildren="Dark" unCheckedChildren="Light" />
+                    <SwitchBtn
+                        checkedChildren="Dark"
+                        unCheckedChildren="Light"
+                    />
                 </div>
             </Header>
             <Content
@@ -58,10 +61,12 @@ function App() {
                     background: "#fff",
                 }}
             >
-                <Router>
+                <Route path="/">
                     <Filters />
                     <NationalSituation />
-                    <Map />
+                    <Route path={["/reg", "/dep"]}>
+                        <Map />
+                    </Route>
                     <Tabs defaultActiveKey="1" centered>
                         <TabPane tab="Taux d'incidence standardisé" key="1">
                             <Spin
@@ -79,7 +84,7 @@ function App() {
                             </Spin>
                         </TabPane>
                     </Tabs>
-                </Router>
+                </Route>
             </Content>
             <Footer style={{ textAlign: "center" }}></Footer>
         </Layout>
