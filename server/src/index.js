@@ -20,6 +20,8 @@ mongoose.connection.once("open", () => {
 const tauxIncidenceRouter = require("./routes/TauxIncidence");
 app.use("/taux-incidence", tauxIncidenceRouter);
 
+app.get("*", (req, res) => res.status(404).json({}));
+
 // documentaion: app.listen([port[, host[, backlog]]][, callback])
 app.listen(port, () => {
     console.log(`### Server is running on port: ${port}`);
