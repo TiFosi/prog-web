@@ -52,7 +52,7 @@ export const NationalSituation = () => {
     return (
         <>
             <Spin spinning={!loaded}>
-                <Divider style={{ whiteSpace: "normal" }}>
+                <center>
                     <h1>Indicateurs de suivi de l'épidémie Covid-19</h1>
                     <span
                         className="ant-typography ant-typography-secondary"
@@ -62,7 +62,7 @@ export const NationalSituation = () => {
                         de 20h. <br />
                         {loaded ? `Source: ${latestData.source?.nom}` : ""},
                     </span>
-                </Divider>
+                </center>
                 <Columns
                     queries={[
                         { columns: 2, query: "min-width: 500px" },

@@ -8,7 +8,7 @@ import { Row, Col } from "antd";
 import "antd/dist/antd.compact.css";
 
 import { NationalSituation } from "./components/NationalSituation.js";
-import Filters from "./components/filters.component.js";
+import { Filters } from "./components/Filters.js";
 import Map from "./components/map.component.js";
 import { DataTable } from "./components/DataTable.js";
 import { Chart } from "./components/Chart.js";
@@ -59,8 +59,8 @@ function App() {
                 }}
             >
                 <Router>
-                    <NationalSituation />
                     <Filters />
+                    <NationalSituation />
                     <Map />
                     <Tabs defaultActiveKey="1" centered>
                         <TabPane tab="Taux d'incidence standardisé" key="1">
