@@ -14,7 +14,7 @@ const SelectGroup = ({ placeholder, route, options }) => {
 
     useEffect(() => {
         options.forEach((opt) => {
-            if (opt.id === parseInt(match?.params?.id)) {
+            if (opt.id == match?.params?.id) {
                 setSelectedOption(opt.id);
             }
         });
@@ -65,7 +65,7 @@ export const Filters = () => {
 
     useEffect(async () => {
         try {
-            let [regions, departements] = await Promise.all([
+            const [regions, departements] = await Promise.all([
                 fetchFromBackend("region"),
                 fetchFromBackend("departement"),
             ]);
@@ -74,11 +74,11 @@ export const Filters = () => {
                 regions.map((region) => ({ id: region._id, name: region.name }))
             );
             setDepartements(
-                departements.map((dep) => ({ id: dep.num, name: dep.name }))
+                departements.map((dep) => ({ id: dep._id, name: dep.name }))
             );
             setLoaded(true);
         } catch (err) {
-            console.log(err);
+            console.log(`### ${err}`);
         }
     }, []);
 

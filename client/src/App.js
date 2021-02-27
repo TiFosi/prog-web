@@ -1,7 +1,7 @@
-import { Route } from "react-router-dom";
+import { Route, useRouteMatch, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMediaPredicate } from "react-media-hook";
-import { Layout, Switch as SwitchBtn, Tabs, Spin } from "antd";
+import { Layout, Switch as SwitchBtn, Tabs, Spin, Divider } from "antd";
 import { Row, Col } from "antd";
 
 // import "antd/dist/antd.dark.css";
@@ -24,6 +24,13 @@ const { TabPane } = Tabs;
 function App() {
     const [tabData, setTabData] = useState([]);
     const [isTabDataLoaded, setIsTabDataLoaded] = useState(false);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedDepartement, setSelectedDepartement] = useState(null);
+
+    const location = useLocation();
+    const isHome = useRouteMatch("/");
+    const isByReg = useRouteMatch("/reg/:id");
+    const isByDep = useRouteMatch("/dep/:id");
 
     const preferredTheme = useMediaPredicate("(prefers-color-scheme: dark)")
         ? "dark"
@@ -31,6 +38,18 @@ function App() {
 
     useEffect(async () => {
         try {
+            const [regionData, departementData] = await Promise.all([
+                isByReg?.params?.id
+                    ? fetchFromBackend("region/" + isByReg?.params?.id)
+                    : null,
+                isByDep?.params?.id
+                    ? fetchFromBackend("departement/" + isByDep?.params?.id)
+                    : null,
+            ]);
+
+            setSelectedRegion(regionData);
+            setSelectedDepartement(departementData);
+
             const response = await fetchFromBackend(
                 "taux-incidence/std-quot-fra"
             );
@@ -39,9 +58,9 @@ function App() {
             );
             setIsTabDataLoaded(true);
         } catch (err) {
-            console.log(err);
+            console.log(`### ${err}`);
         }
-    }, []);
+    }, [location]);
 
     return (
         <Layout>
@@ -67,12 +86,18 @@ function App() {
                     <Route path={["/reg", "/dep"]}>
                         <Map />
                     </Route>
-                    <Tabs defaultActiveKey="1" centered>
-                        <TabPane tab="Taux d'incidence standardisé" key="1">
-                            <Spin
-                                spinning={!isTabDataLoaded}
-                                tip="Chargement..."
-                            >
+                    <Spin spinning={!isTabDataLoaded} tip="Chargement...">
+                        <Divider>
+                            <h1 style={{ fontSize: "60px" }}>
+                                {selectedRegion
+                                    ? selectedRegion.name
+                                    : selectedDepartement
+                                    ? selectedDepartement.name
+                                    : "France"}
+                            </h1>
+                        </Divider>
+                        <Tabs defaultActiveKey="1">
+                            <TabPane tab="Taux d'incidence standardisé" key="1">
                                 <Row gutter={16}>
                                     <Col md={24} lg={11}>
                                         <DataTable data={tabData} />
@@ -81,9 +106,9 @@ function App() {
                                         <Chart data={tabData} />
                                     </Col>
                                 </Row>
-                            </Spin>
-                        </TabPane>
-                    </Tabs>
+                            </TabPane>
+                        </Tabs>
+                    </Spin>
                 </Route>
             </Content>
             <Footer style={{ textAlign: "center" }}></Footer>

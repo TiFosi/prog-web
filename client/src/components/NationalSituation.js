@@ -37,7 +37,7 @@ export const NationalSituation = () => {
                 setLoaded(true);
             }
         } catch (err) {
-            console.log(err);
+            console.log(`### ${err}`);
         }
     }, []);
 

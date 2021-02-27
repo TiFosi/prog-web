@@ -12,4 +12,13 @@ router.route("/").get(async (req, res) => {
     }
 });
 
+router.route("/:id").get(async (req, res) => {
+    try {
+        const result = await RegionModel.findById(req.params.id);
+        res.json(result);
+    } catch (err) {
+        error(res, err);
+    }
+});
+
 module.exports = router;
