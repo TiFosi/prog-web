@@ -11,6 +11,7 @@
     "highcharts-react-official": "^3.0.0",
     "react": "^17.0.1",
     "react-columns": "^1.2.1",
+    "react-css-theme-switcher": "^0.2.2",
     "react-dom": "^17.0.1",
     "react-media-hook": "^0.4.9",
     "react-router-dom": "^5.2.0",

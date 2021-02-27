@@ -2,6 +2,7 @@ import { useRouteMatch, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMediaPredicate } from "react-media-hook";
 import { Layout, Switch as SwitchBtn } from "antd";
+import { useThemeSwitcher } from "react-css-theme-switcher";
 
 import { Main } from "./components/Main.js";
 import { fetchFromBackend } from "./lib/fetchFromBackend";
@@ -13,6 +14,7 @@ function App() {
     const [isTabDataLoaded, setIsTabDataLoaded] = useState(false);
     const [selectedRegion, setSelectedRegion] = useState(null);
     const [selectedDepartement, setSelectedDepartement] = useState(null);
+    const [isDarkMode, setIsDarkMode] = useState();
 
     const location = useLocation();
     const isHome = useRouteMatch("/");
@@ -22,6 +24,12 @@ function App() {
     const preferredTheme = useMediaPredicate("(prefers-color-scheme: dark)")
         ? "dark"
         : "light";
+
+    const { switcher, currentTheme, status, themes } = useThemeSwitcher();
+    const toggleTheme = (isChecked) => {
+        setIsDarkMode(isChecked);
+        switcher({ theme: isChecked ? themes.dark : themes.light });
+    };
 
     useEffect(async () => {
         try {
@@ -62,6 +70,8 @@ function App() {
                     <SwitchBtn
                         checkedChildren="Dark"
                         unCheckedChildren="Light"
+                        onChange={toggleTheme}
+                        checked={isDarkMode}
                     />
                 </div>
             </Header>
@@ -70,6 +80,7 @@ function App() {
                 selectedRegion={selectedRegion}
                 selectedDepartement={selectedDepartement}
                 tabData={tabData}
+                isDarkMode={isDarkMode}
             />
             <Footer style={{ textAlign: "center" }}></Footer>
         </Layout>

@@ -11,21 +11,21 @@ import { Chart } from "./Chart.js";
 const { Content } = Layout;
 const { TabPane } = Tabs;
 
+const style = {
+    margin: "24px 50px",
+    padding: 24,
+    minHeight: 280,
+};
+
 export const Main = ({
     isTabDataLoaded,
     selectedRegion,
     selectedDepartement,
     tabData,
+    isDarkMode,
 }) => {
     return (
-        <Content
-            style={{
-                margin: "24px 50px",
-                padding: 24,
-                minHeight: 280,
-                background: "#fff",
-            }}
-        >
+        <Content style={!isDarkMode ? { ...style, background: "#fff" } : style}>
             <Route path="/">
                 <Filters />
                 <NationalSituation />
