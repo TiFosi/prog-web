@@ -50,11 +50,17 @@ function App() {
             setSelectedRegion(regionData);
             setSelectedDepartement(departementData);
 
-            const response = await fetchFromBackend(
-                "taux-incidence/std-quot-fra"
-            );
+            const routeApi = regionData
+                ? "taux-incidence/std-quot-reg/" + regionData._id
+                : departementData
+                ? "taux-incidence/std-quot-dep/" + departementData._id
+                : "taux-incidence/std-quot-fra";
+
+            const response = await fetchFromBackend(routeApi);
             setTabData(
-                response.map((row, index) => ({ ...row, key: index + 1 }))
+                response.length
+                    ? response.map((row, index) => ({ ...row, key: index + 1 }))
+                    : []
             );
             setIsTabDataLoaded(true);
         } catch (err) {
