@@ -17,8 +17,14 @@ mongoose.connection.once("open", () => {
     console.log("### Connected to MongoDB ATLAS");
 });
 
-const tauxIncidenceRouter = require("./routes/TauxIncidence");
-app.use("/taux-incidence", tauxIncidenceRouter);
+const TauxIncidenceRouter = require("./routes/TauxIncidence");
+app.use("/taux-incidence", TauxIncidenceRouter);
+
+const RegionRouter = require("./routes/RegionRouter");
+app.use("/region", RegionRouter);
+
+const DepartementRouter = require("./routes/DepartementRouter");
+app.use("/departement", DepartementRouter);
 
 app.get("*", (req, res) => res.status(404).json({}));
 

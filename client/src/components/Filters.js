@@ -66,33 +66,15 @@ export const Filters = () => {
     useEffect(async () => {
         try {
             let [regions, departements] = await Promise.all([
-                fetchFromBackend("regions"),
-                fetchFromBackend("departements"),
+                fetchFromBackend("region"),
+                fetchFromBackend("departement"),
             ]);
 
             setRegions(
-                (() => {
-                    let dumpData = [];
-                    for (let index = 1; index <= 50; index++) {
-                        dumpData.push({
-                            id: index,
-                            name: "Reg." + Math.round(Math.random() * 100),
-                        });
-                    }
-                    return dumpData;
-                })()
+                regions.map((region) => ({ id: region._id, name: region.name }))
             );
             setDepartements(
-                (() => {
-                    let dumpData = [];
-                    for (let index = 1; index <= 82; index++) {
-                        dumpData.push({
-                            id: index,
-                            name: "Dep." + Math.round(Math.random() * 100),
-                        });
-                    }
-                    return dumpData;
-                })()
+                departements.map((dep) => ({ id: dep.num, name: dep.name }))
             );
             setLoaded(true);
         } catch (err) {
