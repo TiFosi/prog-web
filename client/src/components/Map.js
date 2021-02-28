@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import ReactMapGl, { Source, Layer } from "react-map-gl";
+import { Button } from "antd";
+import { HomeOutlined } from "@ant-design/icons";
 
 import { fetchFromCoronavirusAPI } from "../lib/fetchFromCoronavirusAPI";
 import geo from "../lib/geo.json";
@@ -10,12 +12,9 @@ const MAPBOXGL_TOKEN =
     "pk.eyJ1IjoidGlmb3NpdG4iLCJhIjoiY2tsbzc3NjF4MHE0ODJ3bm5xbnp3MTcwaSJ9.0arKgyVoTedLpUPSk3Uaog";
 
 const toGeoJSON = (data) => {
-    // console.log(data.allLiveFranceData);
-
     const features = data.allLiveFranceData
-        .filter((item) => item.code.startsWith("REG-"))
+        .filter((item) => item.code.startsWith("DEP-"))
         .map((item) => {
-            console.log(item);
             return {
                 type: "Feature",
                 geometry: {
@@ -28,7 +27,6 @@ const toGeoJSON = (data) => {
             };
         });
 
-    console.log(features);
     return {
         type: "FeatureCollection",
         features,
@@ -36,8 +34,8 @@ const toGeoJSON = (data) => {
 };
 
 export const Map = () => {
+    const [errorPosition, setErrorPosition] = useState(false);
     const [layerData, setLayerData] = useState(null);
-
     const [viewport, setViewport] = useState({
         latitude: 46.9,
         longitude: 1.7,
@@ -81,8 +79,38 @@ export const Map = () => {
         setLayerData(toGeoJSON(response));
     }, []);
 
+    const handleBtnPositionClick = () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setViewport((prevViewport) => ({
+                    ...prevViewport,
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    zoom: 7,
+                }));
+            },
+            (error) => {
+                setErrorPosition({
+                    msg: "Vous avez décidé de ne pas partager votre position.",
+                });
+            }
+        );
+    };
+
     return (
-        <div>
+        <div style={{ textAlign: "center" }}>
+            {errorPosition && <p>{errorPosition.msg}</p>}
+            <Button
+                type="primary"
+                shape="round"
+                icon={<HomeOutlined />}
+                size="large"
+                style={{ marginBottom: "12px" }}
+                onClick={handleBtnPositionClick}
+            >
+                Ma position
+            </Button>
+
             <ReactMapGl
                 {...viewport}
                 mapboxApiAccessToken={MAPBOXGL_TOKEN}
