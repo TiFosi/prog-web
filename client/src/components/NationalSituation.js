@@ -31,7 +31,9 @@ export const NationalSituation = () => {
 
     useEffect(async () => {
         try {
-            const response = await fetchFromCoronavirusAPI();
+            const response = await fetchFromCoronavirusAPI(
+                "FranceLiveGlobalData"
+            );
             if (response["FranceGlobalLiveData"]) {
                 setLatestData(response["FranceGlobalLiveData"][0]);
                 setLoaded(true);

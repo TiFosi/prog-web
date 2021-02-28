@@ -88,7 +88,7 @@ export const Filters = () => {
 
     return (
         <Spin spinning={!loaded} tip="Chargement...">
-            <center>
+            <div style={{ textAlign: "center", marginTop: "20px" }}>
                 <Space wrap style={{ marginBottom: "20px" }}>
                     <Button
                         type={isHome?.isExact ? "primary" : ""}
@@ -109,7 +109,7 @@ export const Filters = () => {
                         route="/dep"
                     />
                 </Space>
-            </center>
+            </div>
         </Spin>
     );
 };

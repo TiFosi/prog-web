@@ -27,11 +27,9 @@ export const Main = ({
     return (
         <Content style={!isDarkMode ? { ...style, background: "#fff" } : style}>
             <Route path="/">
-                <Filters />
                 <NationalSituation />
-                <Route path={["/reg", "/dep"]}>
-                    <Map />
-                </Route>
+                <Map />
+                <Filters />
                 <Spin spinning={!isTabDataLoaded} tip="Chargement...">
                     <Divider>
                         <h1 style={{ fontSize: "60px" }}>

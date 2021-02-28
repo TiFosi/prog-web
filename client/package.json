@@ -13,6 +13,7 @@
     "react-columns": "^1.2.1",
     "react-css-theme-switcher": "^0.2.2",
     "react-dom": "^17.0.1",
+    "react-map-gl": "^6.1.10",
     "react-media-hook": "^0.4.9",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
