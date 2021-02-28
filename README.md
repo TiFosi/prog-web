@@ -12,7 +12,7 @@ This repository contains the full code source of the application that we have ma
 2. In the project's root directory run this command
 
 ```bash
-docker-compose up -d
+docker-compose up --build -d
 ```
 
 3. After the completion of the command, use http://localhost:3000 or http://127.0.0.1:3000 to access the application.
