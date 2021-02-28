@@ -1,20 +1,24 @@
 import { useRouteMatch, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMediaPredicate } from "react-media-hook";
-import { Layout, Switch as SwitchBtn } from "antd";
+import { Layout, Switch as SwitchBtn, Modal } from "antd";
 import { useThemeSwitcher } from "react-css-theme-switcher";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import { Main } from "./components/Main.js";
 import { fetchFromBackend } from "./lib/fetchFromBackend";
 
 const { Header, Footer } = Layout;
+const { confirm } = Modal;
 
 function App() {
     const [tabData, setTabData] = useState([]);
     const [isTabDataLoaded, setIsTabDataLoaded] = useState(false);
     const [selectedRegion, setSelectedRegion] = useState(null);
     const [selectedDepartement, setSelectedDepartement] = useState(null);
-    const [isDarkMode, setIsDarkMode] = useState();
+
+    const { switcher, currentTheme, status, themes } = useThemeSwitcher();
+    const [isDarkMode, setIsDarkMode] = useState(currentTheme === "dark");
 
     const location = useLocation();
     const isHome = useRouteMatch("/");
@@ -25,11 +29,14 @@ function App() {
         ? "dark"
         : "light";
 
-    const { switcher, currentTheme, status, themes } = useThemeSwitcher();
     const toggleTheme = (isChecked) => {
         setIsDarkMode(isChecked);
         switcher({ theme: isChecked ? themes.dark : themes.light });
     };
+
+    useEffect(() => {
+        setIsDarkMode(currentTheme === "dark");
+    }, [currentTheme]);
 
     useEffect(async () => {
         try {
@@ -62,6 +69,27 @@ function App() {
             console.log(`### ${err}`);
         }
     }, [location]);
+
+    useEffect(() => {
+        if (currentTheme && preferredTheme != currentTheme) {
+            console.log(preferredTheme, currentTheme);
+            showConfirm();
+        }
+    }, [preferredTheme, isDarkMode]);
+
+    const showConfirm = () => {
+        confirm({
+            title: "Voulez-vous changer le thème ?",
+            content: `Le thème de votre système d'exploitation est ${preferredTheme}`,
+            icon: <ExclamationCircleOutlined />,
+            onOk() {
+                toggleTheme();
+            },
+            onCancel() {
+                console.log("Cancel");
+            },
+        });
+    };
 
     return (
         <Layout>

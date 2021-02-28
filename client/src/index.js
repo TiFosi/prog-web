@@ -12,7 +12,7 @@ const themes = {
 ReactDOM.render(
     <React.StrictMode>
         <Router>
-            <ThemeSwitcherProvider themeMap={themes} defaultTheme="light">
+            <ThemeSwitcherProvider themeMap={themes} defaultTheme="dark">
                 <App />
             </ThemeSwitcherProvider>
         </Router>
