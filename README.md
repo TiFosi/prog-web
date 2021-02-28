@@ -37,6 +37,7 @@ docker-compose up -d
 -   The client was developed with **React** as follows: `/public` conatins contains all global assets. All the react components used in the project are storedin `/src/components`. `/lib` contains functions used to retrieve data from file, backend or third-party source.
 -   The server was developed with **NodeJs**, with the help of **Express.js** and the database is handled by a cloud **NoSql** database [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
+```bash
 .
 │   docker-compose.dev.yml
 │   docker-compose.yml
@@ -90,3 +91,4 @@ docker-compose up -d
                 DepartementRouter.js
                 RegionRouter.js
                 TauxIncidence.js
+```
