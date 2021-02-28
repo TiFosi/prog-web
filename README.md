@@ -6,7 +6,7 @@ This repository contains the full code source of the application that we have ma
 
 ### Pré-requis
 
-[Docker](https://docs.docker.com/get-docker/)
+-   [Docker](https://docs.docker.com/get-docker/)
 
 1. Clone the repository `git clone https://github.com/TiFosi/prog-web.git`
 2. In the project's root directory run this command
@@ -30,3 +30,63 @@ docker-compose up -d
 1. Clone the repository `git clone https://github.com/TiFosi/prog-web.git`
 2. Start the backend `cd server && npm start`
 3. Start the frontend `cd client && npm start`
+
+## Architecture
+
+-   The project is divided in two parts: server and client.
+-   The client was developed with **React** as follows: `/public` conatins contains all global assets. All the react components used in the project are storedin `/src/components`. `/lib` contains functions used to retrieve data from file, backend or third-party source.
+-   The server was developed with **NodeJs**, with the help of **Express.js** and the database is handled by a cloud **NoSql** database [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+
+.
+│   docker-compose.dev.yml
+│   docker-compose.yml
+│   README.md
+│
+├───client
+│   │   .gitignore
+│   │   Dockerfile
+│   │   package-lock.json
+│   │   package.json
+│   │
+│   ├───public
+│   │       antd.compact.css
+│   │       antd.dark.css
+│   │       index.html
+│   │
+│   └───src
+│       │   App.js
+│       │   index.js
+│       │
+│       ├───components
+│       │       Chart.js
+│       │       DataTable.js
+│       │       Filters.js
+│       │       Main.js
+│       │       Map.js
+│       │       NationalSituation.js
+│       │
+│       └───lib
+│               fetchFromBackend.js
+│               fetchFromCoronavirusAPI.js
+│               geo.json
+│
+└───server
+    │   .gitignore
+    │   Dockerfile
+    │   package-lock.json
+    │   package.json
+    │
+    └───src
+        │   index.js
+        │
+        ├───models
+        │       DepartementModel.js
+        │       RegionModel.js
+        │       TauxIncidenceStdQuot.js
+        │       TauxIncidenceStdQuotDep.js
+        │       TauxIncidenceStdQuotReg.js
+        │
+        └───routes
+                DepartementRouter.js
+                RegionRouter.js
+                TauxIncidence.js
