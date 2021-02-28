@@ -6,7 +6,7 @@ This repository contains the full code source of the application that we have ma
 
 ### Pré-requis
 
-[Docker](https://docs.docker.com/get-docker/)
+-   [Docker](https://docs.docker.com/get-docker/)
 
 1. Clone the repository `git clone https://github.com/TiFosi/prog-web.git`
 2. In the project's root directory run this command
