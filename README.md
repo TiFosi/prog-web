@@ -4,7 +4,7 @@ This repository contains the full code source of the application that we have ma
 
 ## Installation
 
-### Pré-requis
+### Prerequisites
 
 -   [Docker](https://docs.docker.com/get-docker/)
 
@@ -22,14 +22,14 @@ docker-compose up -d
 
 ## Installation without Docker
 
-### Pré-requis
+### Prerequisites
 
 -   Node.js >= 14.15.5
 -   yarn ou npm
 
 1. Clone the repository `git clone https://github.com/TiFosi/prog-web.git`
-2. Start the backend `cd server && npm start`
-3. Start the frontend `cd client && npm start`
+2. Start the backend `cd server` `npm install` `npm start`
+3. Start the frontend `cd client` `npm install` `npm start`
 
 ## Architecture
 
