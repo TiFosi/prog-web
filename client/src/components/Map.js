@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import ReactMapGl, { Source, Layer } from "react-map-gl";
-import { Button } from "antd";
+import { Button, Divider } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 
 import { fetchFromCoronavirusAPI } from "../lib/fetchFromCoronavirusAPI";
 import geo from "../lib/geo.json";
-
-const RegionsMetro = [84, 32, 93, 44, 76, 28, 75, 24, 27, 53, 94, 52, 11];
 
 const MAPBOXGL_TOKEN =
     "pk.eyJ1IjoidGlmb3NpdG4iLCJhIjoiY2tsbzc3NjF4MHE0ODJ3bm5xbnp3MTcwaSJ9.0arKgyVoTedLpUPSk3Uaog";
@@ -98,36 +96,39 @@ export const Map = () => {
     };
 
     return (
-        <div style={{ textAlign: "center" }}>
-            {errorPosition && <p>{errorPosition.msg}</p>}
-            <Button
-                type="primary"
-                shape="round"
-                icon={<HomeOutlined />}
-                size="large"
-                style={{ marginBottom: "12px" }}
-                onClick={handleBtnPositionClick}
-            >
-                Ma position
-            </Button>
-
-            <ReactMapGl
-                {...viewport}
-                mapboxApiAccessToken={MAPBOXGL_TOKEN}
-                mapStyle="https://etalab-tiles.fr/styles/osm-bright/style.json"
-                onViewportChange={(viewport) => {
-                    setViewport(viewport);
-                }}
-            >
-                <Source
-                    type="geojson"
-                    attribution="Données Santé publique France"
-                    data={layerData}
+        <>
+            <Divider>Carte des hospitalisations</Divider>
+            <div style={{ textAlign: "center" }}>
+                {errorPosition && <p>{errorPosition.msg}</p>}
+                <Button
+                    type="primary"
+                    shape="round"
+                    icon={<HomeOutlined />}
+                    size="large"
+                    style={{ marginBottom: "12px" }}
+                    onClick={handleBtnPositionClick}
                 >
-                    <Layer key={circleLayer.id} {...circleLayer} />
-                    <Layer key={countLayer.id} {...countLayer} />
-                </Source>
-            </ReactMapGl>
-        </div>
+                    Ma position
+                </Button>
+
+                <ReactMapGl
+                    {...viewport}
+                    mapboxApiAccessToken={MAPBOXGL_TOKEN}
+                    mapStyle="https://etalab-tiles.fr/styles/osm-bright/style.json"
+                    onViewportChange={(viewport) => {
+                        setViewport(viewport);
+                    }}
+                >
+                    <Source
+                        type="geojson"
+                        attribution="Données Santé publique France"
+                        data={layerData}
+                    >
+                        <Layer key={circleLayer.id} {...circleLayer} />
+                        <Layer key={countLayer.id} {...countLayer} />
+                    </Source>
+                </ReactMapGl>
+            </div>
+        </>
     );
 };

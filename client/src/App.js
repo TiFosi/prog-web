@@ -85,9 +85,7 @@ function App() {
             onOk() {
                 toggleTheme();
             },
-            onCancel() {
-                console.log("Cancel");
-            },
+            onCancel() {},
         });
     };
 
