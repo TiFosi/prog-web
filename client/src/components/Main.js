@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
 import { Layout, Tabs, Spin, Divider } from "antd";
-import { Row, Col } from "antd";
+import Columns from "react-columns";
 
 import { NationalSituation } from "./NationalSituation.js";
 import { Filters } from "./Filters.js";
@@ -42,14 +42,14 @@ export const Main = ({
                     </Divider>
                     <Tabs defaultActiveKey="1">
                         <TabPane tab="Taux d'incidence standardisé" key="1">
-                            <Row gutter={16}>
-                                <Col md={24} lg={11}>
-                                    <DataTable data={tabData} />
-                                </Col>
-                                <Col md={24} lg={13}>
-                                    <Chart data={tabData} />
-                                </Col>
-                            </Row>
+                            <Columns
+                                queries={[
+                                    { columns: 2, query: "min-width: 1000px" },
+                                ]}
+                            >
+                                <DataTable data={tabData} />
+                                <Chart data={tabData} />
+                            </Columns>
                         </TabPane>
                     </Tabs>
                 </Spin>

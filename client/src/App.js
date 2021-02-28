@@ -72,7 +72,6 @@ function App() {
 
     useEffect(() => {
         if (currentTheme && preferredTheme != currentTheme) {
-            console.log(preferredTheme, currentTheme);
             showConfirm();
         }
     }, [preferredTheme, isDarkMode]);

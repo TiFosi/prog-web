@@ -73,10 +73,12 @@ export const Chart = ({ data }) => {
     };
 
     return (
-        <HighchartsReact
-            constructorType={"stockChart"}
-            highcharts={Highcharts}
-            options={options}
-        />
+        <div style={{ width: "100%" }}>
+            <HighchartsReact
+                constructorType={"stockChart"}
+                highcharts={Highcharts}
+                options={options}
+            />
+        </div>
     );
 };

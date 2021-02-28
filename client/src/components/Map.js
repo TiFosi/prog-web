@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import ReactMapGl, { Source, Layer } from "react-map-gl";
 import { Button, Divider } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
@@ -32,6 +32,7 @@ const toGeoJSON = (data) => {
 };
 
 export const Map = () => {
+    const mapRef = useRef();
     const [errorPosition, setErrorPosition] = useState(false);
     const [layerData, setLayerData] = useState(null);
     const [viewport, setViewport] = useState({
@@ -72,6 +73,24 @@ export const Map = () => {
         },
     };
 
+    const handleResize = useCallback(() => {
+        if (mapRef && mapRef.current) {
+            const { width } = mapRef.current.getBoundingClientRect();
+            setViewport((lastViewport) => {
+                setViewport({ ...lastViewport, width });
+            });
+        }
+    }, [mapRef]);
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [handleResize]);
+
     useEffect(async () => {
         const response = await fetchFromCoronavirusAPI("AllLiveData");
         setLayerData(toGeoJSON(response));
@@ -111,23 +130,25 @@ export const Map = () => {
                     Ma position
                 </Button>
 
-                <ReactMapGl
-                    {...viewport}
-                    mapboxApiAccessToken={MAPBOXGL_TOKEN}
-                    mapStyle="https://etalab-tiles.fr/styles/osm-bright/style.json"
-                    onViewportChange={(viewport) => {
-                        setViewport(viewport);
-                    }}
-                >
-                    <Source
-                        type="geojson"
-                        attribution="Données Santé publique France"
-                        data={layerData}
+                <div ref={mapRef}>
+                    <ReactMapGl
+                        {...viewport}
+                        mapboxApiAccessToken={MAPBOXGL_TOKEN}
+                        mapStyle="https://etalab-tiles.fr/styles/osm-bright/style.json"
+                        onViewportChange={(viewport) => {
+                            setViewport(viewport);
+                        }}
                     >
-                        <Layer key={circleLayer.id} {...circleLayer} />
-                        <Layer key={countLayer.id} {...countLayer} />
-                    </Source>
-                </ReactMapGl>
+                        <Source
+                            type="geojson"
+                            attribution="Données Santé publique France"
+                            data={layerData}
+                        >
+                            <Layer key={circleLayer.id} {...circleLayer} />
+                            <Layer key={countLayer.id} {...countLayer} />
+                        </Source>
+                    </ReactMapGl>
+                </div>
             </div>
         </>
     );
