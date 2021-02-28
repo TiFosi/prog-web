@@ -1,104 +1,84 @@
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-} from "recharts";
+import Highcharts from "highcharts/highstock";
+import HighchartsReact from "highcharts-react-official";
 
-const data = [
-    {
-        name: "Page A",
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: "Page B",
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-    {
-        name: "Page C",
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-    },
-    {
-        name: "Page D",
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: "Page E",
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-    },
-    {
-        name: "Page F",
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-    },
-    {
-        name: "Page G",
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-    },
-];
+// import theme from "highcharts/themes/dark-unica";
+import HC_more from "highcharts/highcharts-more";
 
-export const Chart = () => {
+// theme(Highcharts);
+HC_more(Highcharts);
+
+export const Chart = ({ data }) => {
+    const options = {
+        title: {
+            text: "Taux d'incidence (depuis le 13/05/2020)",
+        },
+        subtitle: {
+            text: "Source: data.gouv.fr",
+        },
+        yAxis: {
+            title: {
+                text: "Taux d'incidence",
+            },
+        },
+        time: {
+            useUTC: false,
+        },
+        chart: {
+            zoomType: "x",
+        },
+        rangeSelector: {
+            buttons: [
+                {
+                    type: "week",
+                    count: 1,
+                    text: "1w",
+                },
+                {
+                    type: "month",
+                    count: 1,
+                    text: "1m",
+                },
+                {
+                    type: "month",
+                    count: 6,
+                    text: "6m",
+                },
+                {
+                    type: "all",
+                    text: "All",
+                },
+            ],
+            selected: 3,
+        },
+        series: [
+            {
+                name: "",
+                data: data
+                    .sort((a, b) => {
+                        return new Date(a.date) - new Date(b.date);
+                    })
+                    .map((row) => {
+                        const dateObj = new Date(row.date);
+                        return [
+                            Date.UTC(
+                                dateObj.getUTCFullYear(),
+                                dateObj.getUTCMonth(),
+                                dateObj.getUTCDate()
+                            ),
+                            parseFloat(parseFloat(row.tx_std).toFixed(2)),
+                        ];
+                    }),
+            },
+        ],
+    };
+
     return (
-        <div
-            style={{
-                paddingBottom: "56.25%" /* 16:9 */,
-                position: "relative",
-                height: 0,
-            }}
-        >
-            <div
-                style={{
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    width: "100%",
-                    height: "100%",
-                }}
-            >
-                <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                        width={650}
-                        height={520}
-                        data={data}
-                        margin={{
-                            top: 5,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Line
-                            type="monotone"
-                            dataKey="pv"
-                            stroke="#8884d8"
-                            activeDot={{ r: 8 }}
-                        />
-                        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
+        <div style={{ width: "100%" }}>
+            <HighchartsReact
+                constructorType={"stockChart"}
+                highcharts={Highcharts}
+                options={options}
+            />
         </div>
     );
 };

@@ -1,62 +1,38 @@
-import { useEffect, useState } from "react";
-import { Table, Spin, Typography } from "antd";
-import { fetchFromBackend } from "../lib/fetchFromBackend";
+import { Table } from "antd";
 
-export const DataTable = () => {
-    const [dataSource, setDataSource] = useState([]);
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(async () => {
-        try {
-            const response = await fetchFromBackend(
-                "taux-incidence/std-quot-fra"
-            );
-            setDataSource(
-                response.map((row, index) => ({
-                    key: index + 1,
-                    date: new Date(row["date"]).toLocaleDateString("fr-FR", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    }),
-                    nb_pos: row["nb_pos"].toLocaleString(),
-                    tx_std: parseFloat(row["tx_std"]).toFixed(2),
-                }))
-            );
-            setLoaded(true);
-        } catch (e) {
-            console.log(e);
-        }
-    }, []);
-
+export const DataTable = ({ data }) => {
     return (
-        <Spin spinning={!loaded}>
-            <Table
-                dataSource={dataSource}
-                columns={[
-                    {
-                        title: "Date",
-                        dataIndex: "date",
-                        key: "date",
-                    },
-                    {
-                        title: "Nombre de test positifs",
-                        dataIndex: "nb_pos",
-                        key: "nb_pos",
-                    },
-                    {
-                        title: (
-                            <Typography.Text>
-                                Taux d'incidence standardisé <br /> (100000 *
-                                nombre de cas positif / Population)
-                            </Typography.Text>
-                        ),
-                        dataIndex: "tx_std",
-                        key: "tx_std",
-                    },
-                ]}
-            />
-        </Spin>
+        <Table
+            dataSource={data}
+            columns={[
+                {
+                    title: "Date",
+                    dataIndex: "date",
+                    key: "date",
+                    render: (date) =>
+                        new Date(date).toLocaleDateString("fr-FR", {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        }),
+                    sorter: (a, b) => new Date(a.date) - new Date(b.date),
+                },
+                {
+                    title: "Nombre de test positifs",
+                    dataIndex: "nb_pos",
+                    key: "nb_pos",
+                    render: (text) => text.toLocaleString(),
+                    sorter: (a, b) => a.nb_pos - b.nb_pos,
+                },
+                {
+                    title: "Taux d'incidence",
+                    dataIndex: "tx_std",
+                    key: "tx_std",
+                    render: (text) => parseFloat(text).toFixed(2),
+                    sorter: (a, b) => a.tx_std - b.tx_std,
+                },
+            ]}
+        />
     );
 };

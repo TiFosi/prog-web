@@ -5,7 +5,7 @@ export const fetchFromBackend = async (route) => {
         const responseJson = await response.json();
         return responseJson;
     } catch (err) {
-        console.log(err);
+        console.log(`### ${err}`);
         throw err;
     }
 };
